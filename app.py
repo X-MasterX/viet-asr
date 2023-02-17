@@ -62,10 +62,10 @@ def handle_audio_from_client(data):
     audio_file = open(filepath, "wb")
     decode_string = base64.b64decode(data["audio_base64"].split(",")[1])
     audio_file.write(decode_string)
-    logger.info("asr processing...")
+    #logger.info("asr processing...")
     audio_signal, _ = librosa.load(filepath, sr=16000)
     transcript = vietasr.transcribe(audio_signal)
-    logger.success(f'transcript: {transcript}')
+    #logger.success(f'transcript: {transcript}')
     emit('audio_to_client', {'filepath': filepath, 'transcript': transcript})
 
 
@@ -75,13 +75,13 @@ def handle_upload():
         _file = request.files['file']
         if _file.filename == '':
             return index()
-        logger.info(f'file uploaded: {_file.filename}')
+        #logger.info(f'file uploaded: {_file.filename}')
         filepath = os.path.join(STATIC_DIR, UPLOAD_DIR, _file.filename)
         _file.save(filepath)
-        logger.info(f'saved file to: {filepath}')
+        #logger.info(f'saved file to: {filepath}')
         audio_signal, _ = librosa.load(filepath, sr=16000)
         transcript = vietasr.transcribe(audio_signal)
-        logger.info(f'transcript: {transcript}')
+        #logger.info(f'transcript: {transcript}')
         return render_template(
             template_name_or_list='index.html',
             transcript=transcript,
